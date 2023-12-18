@@ -8,7 +8,7 @@ import { CartItem } from '../entity/CartItem';
 
 export const AppDataSource = new DataSource({
     type: "postgres", // as per ormconfig.json
-    host: "localhost",
+    host: "3.91.149.84",
     port: 5432,
     username: "postgres",
     password: "postgres",
