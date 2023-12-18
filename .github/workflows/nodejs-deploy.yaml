@@ -45,6 +45,7 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          cd /var/www/farm-to-basket
           node dist/main
           # Place your commands here
 
