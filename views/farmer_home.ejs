@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="/public/plotlyChart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('/images/farmer_home_page_final2.png') no-repeat center center/cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #4caf50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .account-options {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .account-icon {
+            width: 30px;
+            margin-right: 10px;
+        }
+
+        .account-options a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            margin: 20px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-img {
+            width: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .product-form button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .product-list {
+            margin-top: 30px;
+        }
+
+        .product-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .product-list th, .product-list td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .product-list th {
+            background-color: #f2f2f2;
+        }
+        
+
+        .rect-container {
+            border-radius: 5px;
+            margin-top: 50px;
+            margin-left: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin-left: 50px;
+        }
+
+        .rectangle-container {
+            width: 350px;
+            height: 270px;
+            border-radius: 65px;
+            overflow: hidden;
+            margin-right: 20px;
+            margin-bottom: 55px;
+            margin-top: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+
+        .rectangle-container img {
+            max-width: 280px;
+            max-height: 150px;
+            margin-left: 90px;
+            margin-top: 40px;
+            border-radius: 20%;
+        }
+
+        .button-inside {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Optional: Hover effect for the button */
+        .button-inside:hover {
+            background-color: #45a049;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .message-icon-container {
+            position: relative;
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
+            margin-right: 10px; 
+        }
+
+        .message-icon {
+            width: 37px; /* Set the width and height according to your icon size */
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .message-icon,
+        .account-icon {
+            margin-right: 10px; /* Add some space between icons */
+        }
+
+        .message-count {
+            position: absolute;
+            top: 0;
+            margin-bottom: 5px;
+            right: 0;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 8px;
+            font-size: 14px;
+        }
+
+        .message-container.hidden {
+            display: none;
+        }
+
+        .message-container img {
+            max-width: 100px;
+            max-height: auto;
+            object-fit: cover;
+            object-position: center;
+            margin-bottom: 10px;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Hey <%= farmerProfile.fullname %>, Welcome to Farmer's Dashboard</h1>
+        <div class="account-options">
+            <div class="message-icon-container">
+                <img class="message-icon" src="/public/images/farmer_message_icon.png" alt="Message Icon">
+                <div class="message-count" id="messageButton"><%= notifications.length %></div>
+            </div>
+            <img class="account-icon" src="/public/images/account_icon.png" alt="Account Icon">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="rect-container">
+        <!-- Rectangle for Detailed Customer Report -->
+        <div class="rectangle-container">
+            <img src="/public/images/detailed_report.jpeg" alt="Detailed Report">
+            <button class="button-inside" id="customerReportButton">Detailed Customer Report</button>
+        </div>
+    
+        <!-- Rectangle for Products Owned History -->
+        <div class="rectangle-container">
+            <img src="/public/images/farmer_history_icon.png" alt="Products Owned History">
+            <button class="button-inside" id="productsOwnedButton">Products Owned History</button>
+        </div>
+    
+        <!-- Rectangle for Products Sold Report -->
+        <div class="rectangle-container">
+            <img src="/public/images/farmer_product_sale_history_icon.png" alt="Products Sold Report">
+            <button class="button-inside" id="productsSoldButton">Products Sold Report</button>
+        </div>
+    
+        <!-- Rectangle for Add Products -->
+        <div class="rectangle-container">
+            <img src="/public/images/farmer_add_product_icon.png" alt="Add Products">
+            <button class="button-inside" id="addProductButton">Add Products</button>
+        </div>
+
+    
+        <!-- Rectangle for Track Products and Money -->
+        <div class="rectangle-container">
+            <img src="/public/images/farmer_product_sale_history_icon.png" alt="Track Products and Money">
+            <button class="button-inside" id="trackProductButton">Track Products and Money</button>
+        </div>
+    </div>
+
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <div class="container">
+                <h2 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 24px;">Messages</h2>
+    
+                <div class="message-container">
+                    <% notifications.forEach(notification => { %>
+                        <img src="<%= notification.product.image.url %>" alt="<%= notification.product.name %>">
+                        <div class="notification"><strong><%= notification.message %></strong></div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <div class="modal" id="graphModal">
+        <div class="modal-content">
+            <div class="container">
+                <div id="chartData" style="display: none;"
+                    data-product-names="<%= JSON.stringify(chartData.productNames) %>"
+                    data-total-earned="<%= JSON.stringify(chartData.totalEarned) %>"
+                    data-actual-quantities="<%= JSON.stringify(chartData.actualQuantities) %>"
+                    data-sold-quantities="<%= JSON.stringify(chartData.soldQuantities) %>">
+                </div>
+                <h2 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 24px;">Graph</h2>
+                <!-- Containers for the charts -->
+                <div id="barChart" style="width:100%;max-width:600px;height:400px;"></div>
+                <div id="scatterChart" style="width:100%;max-width:600px;height:400px;"></div>
+            </div>   
+        </div>
+    </div>
+
+    <!-- The Modal of products owned history-->
+    <div class="modal" id="productsownModal">
+        <div class="modal-content">
+            <div class="container">
+                <h2 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 24px;">History</h2>
+
+                <!-- Products you own -->
+                <div class="product-list">
+                    <h2>Products you own</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity (kg)</th>
+                                <th>Price per kg</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% ownedproductsreport.forEach(product => { %>
+                                <tr>
+                                    <td><%= product.name %></td>
+                                    <td><%= product.quantity %></td>
+                                    <td>$<%= product.price %></td>
+                                    <td>$<%= product.totalAmount %></td>
+                                </tr>
+                            <% }); %>
+                            <% if (ownedproductsreport.length === 0) { %>
+                                <tr>
+                                    <td colspan="4">No products owned yet.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                    <div class="product-form">
+                        <form action="/add_product" method="get">
+                            <button type="submit">Add Products</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="productssoldModal">
+        <div class="modal-content">
+            <div class="container">
+                <h2 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 24px;">History</h2>
+
+                <!-- Products Sold -->
+                <div class="product-list">
+                    <h2>Products Sold</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity (kg)</th>
+                                <th>Price per kg</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% soldproductsreport.forEach(product => { %>
+                                <tr>
+                                    <td><a href="/customer_individual_report/<%= product.productId %>"><%= product.productName %></a></td>
+                                    <td><%= product.quantitySold %></td>
+                                    <td>$<%= product.productPrice %></td>
+                                    <td>$<%= product.totalAmount %></td>
+                                </tr>
+                            <% }); %>
+                            <% if (soldproductsreport.length === 0) { %>
+                                <tr>
+                                    <td colspan="4">No products sold yet.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Total Amount Owed -->
+                <div class="total-owe">
+                    <h2>Total Amount Owed: $<%= totalOwe %></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded and parsed");
+            // JavaScript code
+            const productsOwnButton = document.getElementById('productsOwnedButton');
+            const productsOwnModal = document.getElementById('productsownModal');
+            const productsSoldButton = document.getElementById('productsSoldButton');
+            const productsSoldModal = document.getElementById('productssoldModal');
+            const addProductButton = document.getElementById('addProductButton');
+            const customerReportButton = document.getElementById('customerReportButton');
+            const graphModal = document.getElementById('graphModal');
+            const trackProductButton = document.getElementById('trackProductButton');
+            const messageButton = document.getElementById('messageButton');
+            const messageModal = document.getElementById('messageModal');
+
+            // Event listener for Products Owned History button
+            productsOwnButton.addEventListener('click', () => {
+                productsOwnModal.style.display = 'block';
+            });
+
+            // Event listener for Products Sold Report button
+            productsSoldButton.addEventListener('click', () => {
+                productsSoldModal.style.display = 'block';
+            });
+
+            // Event listener for Add Products button
+            addProductButton.addEventListener('click', () => {
+                window.location.href = '/add_product';
+            });
+
+            // Event listener for Detailed Customer Report button
+            customerReportButton.addEventListener('click', () => {
+                window.location.href = '/customer_report';
+            });
+
+            // Event listener for Track Products and Money button
+            trackProductButton.addEventListener('click', () => {
+                // Add the correct action for this button
+                graphModal.style.display = 'block';
+            });
+
+            messageButton.addEventListener('click', () => {
+                messageModal.style.display = 'block';
+            });
+
+            // Close modal when clicking outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target === productsOwnModal) {
+                    productsOwnModal.style.display = 'none';
+                }
+                if (event.target === productsSoldModal) {
+                    productsSoldModal.style.display = 'none';
+                }
+                if (event.target === graphModal) {
+                    graphModal.style.display = 'none';
+                }
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === messageModal) {
+                    messageModal.style.display = 'none';
+                }
+            });
+
+            //graph model for plotting bar chart and scatter chart
+            var chartDataElement = document.getElementById('chartData');
+            
+            var productNames = JSON.parse(chartDataElement.getAttribute('data-product-names'));
+            var totalEarned = JSON.parse(chartDataElement.getAttribute('data-total-earned'));
+            var actualQuantities = JSON.parse(chartDataElement.getAttribute('data-actual-quantities'));
+            var soldQuantities = JSON.parse(chartDataElement.getAttribute('data-sold-quantities'));
+
+            renderBarChart(productNames, actualQuantities, soldQuantities);
+            renderScatterPlot(productNames, totalEarned);
+            
+        });
+
+    </script>
+
+</body>
+</html>

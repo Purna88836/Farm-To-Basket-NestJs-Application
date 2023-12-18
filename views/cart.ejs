@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cart-item {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item img {
+            max-width: 100px;
+            max-height: 50px;
+            margin-right: 20px;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .checkout-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .checkout-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>Your Cart</h2>
+    <% if (cart_items && cart_items.length > 0) { %>
+        <% cart_items.forEach(item => { %>
+            <div class="cart-item">
+                <img src="<%= item.product.image %>" alt="<%= item.product.name %>">
+                <div class="cart-item-details">
+                    <h3><%= item.product.name %></h3>
+                    <p>Quantity: <%= item.quantity %></p>
+                    <p>Cost: $<%= item.total_price %></p>
+                </div>
+            </div>
+        <% }); %>
+        <h2>Total Price: $<%= total_price %></h2>
+        <form action="/checkout" method="post">
+            <!-- CSRF token is handled automatically in Express with libraries like csurf -->
+            <button class="checkout-button" type="submit">Proceed to Checkout</button>
+        </form>
+    <% } else { %>
+        <p>Your cart is empty.</p>
+    <% } %>
+    <script>
+        window.addEventListener("pageshow", function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
+</body>
+</html>

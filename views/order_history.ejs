@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Order History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .order-item {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .order-item img {
+            max-width: 100px;
+            max-height: 50px;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+        .total-amount {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .review-link {
+            color: #337ab7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Your Past Orders</h2>
+    <% if (groupedItems && groupedItems.length > 0) { %>
+        <% groupedItems.forEach(item => { %>
+            <div class="order-item">
+                <img src="<%= item.product.image %>" alt="<%= item.product.name %>">
+                <div>
+                    <h3><%= item.product.name %></h3>
+                    <p>Price: $<%= new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(item.total_price) %></p>
+                    <a class="review-link" href="/add_review/<%= item.product.id %>">Write a review</a>
+                </div>
+            </div>
+        <% }); %>
+        <div class="total-amount">Total Spent Amount: $<%= total_price %></div>
+    <% } else { %>
+        <p>You have no past orders.</p>
+    <% } %>
+</body>
+</html>

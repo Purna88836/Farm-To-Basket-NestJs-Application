@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .customer-card {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .customer-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .customer-details img {
+            max-width: 80px;
+            max-height: 80px;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+        .product-card {
+        display: flex;
+        justify-content: center; /* Center the card horizontally */
+        align-items: center; /* Center the card vertically */
+        margin: 20px auto; /* Add some margin around the card */
+        max-width: 150px; /* Maximum width of the card */
+        }
+
+        .product-image-details {
+            width: 100%; /* Make the image container take the full width of the card */
+            display: flex;
+            justify-content: center; /* Center the image horizontally */
+            align-items: center; /* Center the image vertically */
+            overflow: hidden; /* In case the image is larger than the container */
+        }
+
+        .product-image-details img {
+            max-width: 100%; /* Ensure the image does not exceed the container width */
+            height: auto; /* Keep the image aspect ratio */
+            border-radius: 10px; /* Optional: Rounded corners for the image */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Shadow effect */
+            opacity: 0; /* Start with the image invisible for the animation */
+            animation: fadeIn 2s ease forwards; /* Fade-in animation */
+        }
+
+        /* Keyframes for the fade-in animation */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+    
+
+        .customer-info {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Customer Details for <%= customers[0].productName %></h2>
+    <div class="product-card">
+        <div class="product-image-details">
+            <img src="\<%= customers[0].productImage %>" alt="<%= customers[0].productName %>">
+        </div>
+    </div>
+    <% customers.forEach(customer => { %>
+        <div class="customer-card">
+            <div class="customer-details">
+                <!-- Replace 'product.image.url' and 'product.name' with the correct variables from your data -->
+                <div>
+                    <div class="customer-info">Customer name: <%= customer.customerName %></div>
+                    <div class="customer-info">Email: <%= customer.customerEmail %></div>
+                    <div class="customer-info">Mobile Number: <%= customer.customerNumber %></div>
+                    <div class="customer-info">Location details: <%= customer.customerLocation %></div>
+                </div>
+            </div>
+        </div>
+    <% }); %>
+</body>
+</html>

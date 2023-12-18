@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .product-details-container {
+            margin: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-details-container h2 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .product-details-container p {
+            font-size: 15px;
+            color: #666;
+        }
+
+        .product-details-container hr {
+            margin: 20px 0;
+            border: 0.5px solid #ccc;
+        }
+
+        .customer-reviews {
+            margin-top: 30px;
+        }
+
+        .customer-reviews h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .customer-reviews p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .customer-reviews hr {
+            margin: 15px 0;
+            border: 0.5px solid #ccc;
+        }
+
+        .product-details-container img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
+        .star-rating {
+            color: #ffd700;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="product-details-container">
+        <img src="\<%= product.image %>" alt="<%= product.name %>">
+        <h2><%= product.name %></h2>
+        <p>About: <%= product.description %></p>
+        <p>Price: $<%= product.price %></p>
+        <p>Available Quantity: <%= product.quantity %></p>
+        <hr>
+        <h3>Customer Reviews</h3>
+        <div class="customer-reviews">
+            <% if (reviewCustomerPairs.length > 0) { %>
+                <% reviewCustomerPairs.forEach(pair => { %>
+                    <p class="review-details">Reviewed by: <strong><%= pair.customerName %></strong> <br> 
+                        <strong><%= pair.review.created_at.toDateString() %></strong>
+                        <br>Rating: 
+                        <span class="star-rating">
+                            <% for (let i = 0; i < pair.review.rating; i++) { %>
+                                &#9733; <!-- Unicode star -->
+                            <% } %>
+                            <% for (let i = pair.review.rating; i < 5; i++) { %>
+                                &#9734; <!-- Unicode hollow star -->
+                            <% } %>
+                        </span>
+                    </p>
+                    <p><%= pair.review.content %></p>
+                    <hr>
+                <% }); %>
+            <% } else { %>
+                <p>No reviews yet.</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
