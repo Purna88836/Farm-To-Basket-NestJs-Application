@@ -32,7 +32,7 @@ jobs:
     - name: Deploy to EC2
       uses: appleboy/scp-action@master
       with:
-        host: 23.22.45.102
+        host: 52.90.85.144
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "dist/, public/, views/, node_modules/, uploads/"
@@ -41,10 +41,11 @@ jobs:
     - name: Execute SSH commands
       uses: appleboy/ssh-action@master
       with:
-        host: 23.22.45.102
+        host: 52.90.85.144
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /var/www/farm-to-basket
           pm2 start ecosystem.config.js --env production
+          node dist/main
 
