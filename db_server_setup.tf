@@ -16,7 +16,8 @@ resource "null_resource" "db_remote" {
       "sudo -u postgres createdb farmtobasketnestjs",
       "echo \"listen_addresses = '*' \" | sudo tee -a /var/lib/pgsql/data/postgresql.conf",
       "echo \"host all all 0.0.0.0/0 md5\" | sudo tee -a /var/lib/pgsql/data/pg_hba.conf",
-      "sudo systemctl reload postgresql"
+      "sudo systemctl reload postgresql",
+      "sudo systemctl restart postgresql"
     ]
   }
 }

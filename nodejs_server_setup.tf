@@ -13,7 +13,8 @@ resource "null_resource" "remote2" {
       "nvm install 20",
       "npm install -g pm2",
       "npm install -g npm@10.2.5",
-      "sudo mkdir -p /var/www/farm-to-basket"
+      "sudo mkdir -p /var/www/farm-to-basket",
+      "sudo chmod 777 /var/www/farm-to-basket"
     ]
   }
 }
