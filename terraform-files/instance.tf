@@ -19,3 +19,5 @@ resource "aws_instance" "db_instance" {
     Name = "Virtual_Database_Server"
   }
 }
+
+#instance
