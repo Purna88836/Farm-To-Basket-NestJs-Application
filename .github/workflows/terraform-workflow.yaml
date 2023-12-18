@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          path: 'terraform-files'
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -26,19 +28,24 @@ jobs:
       - name: Terraform Format
         id: fmtt
         run: terraform fmt
+        working-directory: ./terraform-files
 
       - name: Terraform Format check
         id: fmt
         run: terraform fmt -check
+        working-directory: ./terraform-files
 
       - name: Terraform Init
         id: init
         run: terraform init
+        working-directory: ./terraform-files
 
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color
+        working-directory: ./terraform-files
 
       - name: Terraform apply
         id: apply
         run: terraform apply -auto-approve
+        working-directory: ./terraform-files
