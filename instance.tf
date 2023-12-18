@@ -20,4 +20,4 @@ resource "aws_instance" "db_instance" {
   }
 }
 
-#instances
+#instance
