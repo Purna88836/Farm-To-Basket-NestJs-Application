@@ -20,7 +20,7 @@ import { AppController } from './root.controller';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres', // Type of your database
-      host: '3.91.149.84', // Database host
+      host: '3.95.199.33', // Database host
       port: 5432,        // Database port
       username: 'postgres',  // Database username
       password: 'postgres',  // Database password
