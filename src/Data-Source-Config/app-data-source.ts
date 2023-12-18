@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     port: 5432,
     username: "postgres",
     password: "postgres",
-    database: "farmtobasketnestjstest",
+    database: "farmtobasketnestjs",
     entities: [Profile, Product, Review, Notification, CartItem ],
     synchronize: false,
     migrations: ["src/migration/**/*.ts"],
