@@ -1,0 +1,52 @@
+name: Build and Deploy NestJS App
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.tf'  # Ignores all Terraform (.tf) files
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        path: 'farm-to-basket'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20' # Replace with your Node.js version
+    
+    - name: run database migrations
+      run: npm run typeorm -- migration:run --dataSource ./src/Data-Source-Config/app-data-source.ts
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Deploy to EC2
+      uses: appleboy/scp-action@master
+      with:
+        host: 
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "dist/, public/, views/, node_modules/, uploads/"
+        target: "/var/www/farm-to-basket"
+    
+    - name: Execute SSH commands
+      uses: appleboy/ssh-action@master
+      with:
+        host: 
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          node dist/main
+          # Place your commands here
+
