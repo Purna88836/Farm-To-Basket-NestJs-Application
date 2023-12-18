@@ -9,7 +9,7 @@ resource "null_resource" "db_remote" {
   provisioner "remote-exec" {
     inline = [
       "sudo dnf update",
-      "sudo dnf install postgresql15.x86_64 postgresql15-server",
+      "sudo dnf install postgresql15.x86_64 postgresql15-server -y",
       "sudo postgresql-setup --initdb",
       "sudo systemctl start postgresql",
       "sudo -u postgres psql -c \"ALTER USER postgres PASSWORD 'postgres';\"",
