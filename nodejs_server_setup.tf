@@ -1,7 +1,3 @@
-variable my_public_key{
-  type = string
-}
-
 resource "null_resource" "remote2" {
   connection {
     type        = "ssh"
