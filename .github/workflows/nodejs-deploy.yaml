@@ -47,6 +47,4 @@ jobs:
         script: |
           cd /var/www/farm-to-basket
           pm2 start ecosystem.config.js --env production
-          node dist/main
-          # Place your commands here
 
