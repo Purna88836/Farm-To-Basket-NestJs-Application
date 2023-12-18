@@ -20,11 +20,11 @@ jobs:
       with:
         node-version: '20' # Replace with your Node.js version
     
-    - name: run database migrations
-      run: npm run typeorm -- migration:run --dataSource ./src/Data-Source-Config/app-data-source.ts
-
     - name: Install Dependencies
       run: npm install
+    
+    - name: run database migrations
+      run: npm run typeorm -- migration:run --dataSource ./src/Data-Source-Config/app-data-source.ts
 
     - name: Build
       run: npm run build
