@@ -17,4 +17,9 @@ resource "null_resource" "remote2" {
       "sudo chmod 777 /var/www/farm-to-basket"
     ]
   }
+
+  provisioner "file" {
+    source      = "./ecosystem.config.js"
+    destination = "/var/www/farm-to-basket/ecosystem.config.js"
+  }
 }
