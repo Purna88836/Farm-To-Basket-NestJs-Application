@@ -32,7 +32,7 @@ jobs:
     - name: Deploy to EC2
       uses: appleboy/scp-action@master
       with:
-        host: 3.83.10.1
+        host: 23.22.45.102
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "dist/, public/, views/, node_modules/, uploads/"
@@ -41,7 +41,7 @@ jobs:
     - name: Execute SSH commands
       uses: appleboy/ssh-action@master
       with:
-        host: 3.83.10.1
+        host: 23.22.45.102
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
